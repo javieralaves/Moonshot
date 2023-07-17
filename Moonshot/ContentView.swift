@@ -13,6 +13,10 @@ struct ContentView: View {
     let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
     let missions: [Mission] = Bundle.main.decode("missions.json")
     
+    // For the view segmented control
+    @State private var viewPicker = "Grid"
+    var viewStates = ["Grid", "List"]
+    
     // Grid layout
     let columns = [
         GridItem(.adaptive(minimum: 150))
@@ -21,6 +25,16 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ScrollView {
+                
+                // View picker
+                Picker("", selection: $viewPicker) {
+                    ForEach(viewStates, id: \.self) {
+                        Text($0)
+                    }
+                }
+                .pickerStyle(.segmented)
+                
+                // Grid view
                 LazyVGrid(columns: columns) {
                     ForEach(missions) { mission in
                         NavigationLink {
@@ -30,8 +44,9 @@ struct ContentView: View {
                         }
                     }
                 }
-                .padding([.horizontal, .bottom])
+                
             }
+            .padding([.horizontal, .bottom])
             .navigationTitle("Moonshot")
             .background(.darkBackground)
             .preferredColorScheme(.dark)
