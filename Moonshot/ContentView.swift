@@ -14,12 +14,30 @@ struct ContentView: View {
     let missions: [Mission] = Bundle.main.decode("missions.json")
     
     // For the view segmented control
-    @State private var viewPicker = "Grid"
-    var viewStates = ["Grid", "List"]
+    @State private var showingGrid = true
     
     var body: some View {
         NavigationView {
-            ListLayout(astronauts: astronauts, missions: missions)
+            
+            // Modifiers can't be attached to if statement, so we group
+            Group {
+                if showingGrid {
+                    GridLayout(astronauts: astronauts, missions: missions)
+                } else {
+                    ListLayout(astronauts: astronauts, missions: missions)
+                }
+            }
+            .toolbar {
+                Button {
+                    showingGrid.toggle()
+                } label: {
+                    if showingGrid {
+                        Label("Show as table", systemImage: "list.dash")
+                    } else {
+                        Label("Show as grid", systemImage: "square.grid.2x2")
+                    }
+                }
+            }
             .navigationTitle("Moonshot")
             .background(.darkBackground)
             .preferredColorScheme(.dark)

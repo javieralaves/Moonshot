@@ -27,6 +27,7 @@ struct GridLayout: View {
                     }
                 }
             }
+            .padding()
         }
     }
 }
