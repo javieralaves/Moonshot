@@ -17,36 +17,9 @@ struct ContentView: View {
     @State private var viewPicker = "Grid"
     var viewStates = ["Grid", "List"]
     
-    // Grid layout
-    let columns = [
-        GridItem(.adaptive(minimum: 150))
-    ]
-    
     var body: some View {
         NavigationView {
-            ScrollView {
-                
-                // View picker
-                Picker("", selection: $viewPicker) {
-                    ForEach(viewStates, id: \.self) {
-                        Text($0)
-                    }
-                }
-                .pickerStyle(.segmented)
-                
-                // Grid view
-                LazyVGrid(columns: columns) {
-                    ForEach(missions) { mission in
-                        NavigationLink {
-                            MissionView(mission: mission, astronauts: astronauts)
-                        } label: {
-                            MissionCard(mission: mission)
-                        }
-                    }
-                }
-                
-            }
-            .padding([.horizontal, .bottom])
+            ListLayout(astronauts: astronauts, missions: missions)
             .navigationTitle("Moonshot")
             .background(.darkBackground)
             .preferredColorScheme(.dark)
